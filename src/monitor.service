@@ -1,0 +1,9 @@
+[Unit]
+Description=Ms Iot Monitoring Service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /home/User1/ms_aws_monitor/src/runService.sh
+
+[Install]
+WantedBy=multi-user.target
