@@ -79,7 +79,7 @@ def checkTimeUpdate():
         if int(hourThen) != int(hour):
             # check the status and update the git
             stopMs()
-            output = getMsStatus()
+            output = str(getMsStatus())
             print(output)
             failed = False
             for line in output.split('\n'):                
