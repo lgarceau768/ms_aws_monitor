@@ -1,4 +1,5 @@
 #!/bin/bash
+/home/User1/emsa/cleariptables
 deviceName=$(hostname)
 cd /home/User1/
 git clone https://lgarceau768:Spook524*@github.com/lgarceau768/ms_aws_monitor.git
