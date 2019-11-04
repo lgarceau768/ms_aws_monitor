@@ -9,10 +9,13 @@ def startMs():
     output = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True).communicate()[0]
     
 def getMsStatus():
-    command = ['systemctl', 'status', 'msIot']
-    output = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True).communicate()[0]
-    print(output)
-    return output
+    for proc in psutil.process_iter():
+        try:
+            if 'msIot'.lower() in proc.name().lower():
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
 
 def createFailLog(output):
     date = str(datetime.datetime.today().isoformat())
@@ -79,15 +82,16 @@ def checkTimeUpdate():
         if int(hourThen) != int(hour):
             # check the status and update the git
             stopMs()
-            output = str(getMsStatus())
-            print(output)
-            failed = False
-            for line in output.split('\n'):                
-                if 'failed' in line.lower():    
-                    failed = True
-            if failed:
-                createFailLog(output)
+            if not getMsStatus():
                 increaseTotalFailed()
+            # output = str(getMsStatus())
+            # failed = False
+            # for line in output.split('\n'):                
+            #     if 'failed' in line.lower():    
+            #         failed = True
+            # if failed:
+            #     createFailLog(output)
+            #     increaseTotalFailed()
             updateGit()
             startMs()        
             removeLogsAnalytics()    
