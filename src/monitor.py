@@ -1,4 +1,4 @@
-import os, sys, subprocess, datetime, shutil, time
+import os, sys, subprocess, datetime, shutil, time, psutil
 
 def stopMs():
     command = ['systemctl', 'stop', 'msIot', '-l']
@@ -82,7 +82,9 @@ def checkTimeUpdate():
         if int(hourThen) != int(hour):
             # check the status and update the git
             stopMs()
-            if not getMsStatus():
+            status = getMsStatus()
+            print(status)
+            if not status:
                 increaseTotalFailed()
             # output = str(getMsStatus())
             # failed = False
