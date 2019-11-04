@@ -11,6 +11,7 @@ def startMs():
 def getMsStatus():
     for proc in psutil.process_iter():
         try:
+            print('listing processes')
             print(proc.name())
             if 'msIot'.lower() in proc.name().lower():
                 return True
