@@ -39,7 +39,7 @@ def increaseTotalFailed():
     with open('totalFails.txt', 'r') as file:
         today = str(datetime.datetime.today().isoformat())
         lines = file.readlines()
-        lines = lines.strip().split(',')
+        lines = lines[0].strip().split(',')
         todayThen = lines[0]
         amountFailed = lines[1]
         if todayThen != today:
