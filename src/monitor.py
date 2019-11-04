@@ -53,8 +53,8 @@ def increaseTotalFailed():
                     file.write(today+','+str(int(amountFailed)+1))
                     file.close()
                 
-def updateTextFile(hour):
-    with open(fileName, 'w') as file:
+def updateTextFile(hour):x
+    with open('out/timeInterval.txt', 'w') as file:
         file.write(str(hour))
         file.close()
 
@@ -66,7 +66,7 @@ def removeLogsAnalytics():
 
 def checkTimeUpdate():
     hour = str(datetime.datetime.today().hour)
-    fileName = 'timeInterval.txt'
+    fileName = 'out/timeInterval.txt'
     if not os.path.isfile(fileName):
         updateTextFile(hour)
         return hour
