@@ -53,7 +53,7 @@ def increaseTotalFailed():
                     file.write(today+','+str(int(amountFailed)+1))
                     file.close()
                 
-def updateTextFile(hour):x
+def updateTextFile(hour):
     with open('out/timeInterval.txt', 'w') as file:
         file.write(str(hour))
         file.close()
