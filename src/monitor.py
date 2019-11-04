@@ -76,31 +76,31 @@ def checkTimeUpdate():
         updateTextFile(hour)
         return hour
     else:
-        hourThen = '0'
-        with open(fileName, 'r') as file:
-            lines = file.readlines()
-            hourThen = lines[0].strip()
-            file.close()
-        if int(hourThen) != int(hour):
-            # check the status and update the git
-            stopMs()
-            status = getMsStatus()
-            print(status)
-            if not status:
-                increaseTotalFailed()
-            # output = str(getMsStatus())
-            # failed = False
-            # for line in output.split('\n'):                
-            #     if 'failed' in line.lower():    
-            #         failed = True
-            # if failed:
-            #     createFailLog(output)
-            #     increaseTotalFailed()
-            updateGit()
-            startMs()        
-            removeLogsAnalytics()    
-            updateTextFile(hour)
+        # hourThen = '0'
+        # with open(fileName, 'r') as file:
+        #     lines = file.readlines()
+        #     hourThen = lines[0].strip()
+        #     file.close()
+        # if int(hourThen) != int(hour):
+        # check the status and update the git
+        stopMs()
+        status = getMsStatus()
+        print(status)
+        if not status:
+            increaseTotalFailed()
+        # output = str(getMsStatus())
+        # failed = False
+        # for line in output.split('\n'):                
+        #     if 'failed' in line.lower():    
+        #         failed = True
+        # if failed:
+        #     createFailLog(output)
+        #     increaseTotalFailed()
+        updateGit()
+        startMs()        
+        removeLogsAnalytics()    
+        updateTextFile(hour)
 
 while True:
     checkTimeUpdate()
-    time.sleep(5)
+    time.sleep(60*5)
