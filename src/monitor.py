@@ -74,7 +74,7 @@ def checkTimeUpdate():
         hourThen = '0'
         with open(fileName, 'r') as file:
             lines = file.readlines()
-            hourThen = lines.strip()
+            hourThen = lines[0].strip()
             file.close()
         if int(hourThen) != int(hour):
             # check the status and update the git
