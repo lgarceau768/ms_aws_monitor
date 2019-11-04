@@ -80,6 +80,7 @@ def checkTimeUpdate():
             # check the status and update the git
             stopMs()
             output = getMsStatus()
+            print(output)
             failed = False
             for line in output.split('\n'):                
                 if 'failed' in line.lower():    
