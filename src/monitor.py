@@ -16,7 +16,7 @@ def getMsStatus():
 
 def createFailLog(output):
     date = str(datetime.datetime.today().isoformat())
-    fileName = 'out/msIot_stop_'+date+'.log'
+    fileName = 'msIot_stop_'+date+'.log'
     with open(fileName,'w') as logFile:
         for line in output:
             logFile.write(line.strip()+'\n')
@@ -27,13 +27,13 @@ def createFailLog(output):
         print('exception %s when moving %s' % (str(e), fileName))
 
 def increaseTotalFailed():
-    if not os.path.isfile('out/totalFails.txt'):
-        with open('out/totalFails.txt', 'w') as file:
+    if not os.path.isfile('totalFails.txt'):
+        with open('totalFails.txt', 'w') as file:
             today = str(datetime.datetime.today().isoformat())
             file.write(today+',1')
             file.close()
         return
-    with open('out/totalFails.txt', 'r') as file:
+    with open('totalFails.txt', 'r') as file:
         today = str(datetime.datetime.today().isoformat())
         lines = file.readlines()
         lines = lines.strip().split(',')
@@ -43,18 +43,18 @@ def increaseTotalFailed():
             amountFailed = '1'
         else:
             if int(amountFailed) >= 5:
-                fileName = 'out/ms_service_failed_max_'+today+'.log'
+                fileName = 'ms_service_failed_max_'+today+'.log'
                 with open(fileName, 'w') as file:
                     file.write('the ms iot serivce failed more than 5 times please see the log')
                     file.close()
                 shutil.move(os.path.join('/home','User1','ms_aws_monitor','out',fileName), os.path.join('/home','User1','out'))
             else:
-                with open('out/totalFails.txt','w') as file:
+                with open('totalFails.txt','w') as file:
                     file.write(today+','+str(int(amountFailed)+1))
                     file.close()
                 
 def updateTextFile(hour):
-    with open('out/timeInterval.txt', 'w') as file:
+    with open('timeInterval.txt', 'w') as file:
         file.write(str(hour))
         file.close()
 
@@ -66,7 +66,7 @@ def removeLogsAnalytics():
 
 def checkTimeUpdate():
     hour = str(datetime.datetime.today().hour)
-    fileName = 'out/timeInterval.txt'
+    fileName = 'timeInterval.txt'
     if not os.path.isfile(fileName):
         updateTextFile(hour)
         return hour
