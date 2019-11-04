@@ -9,7 +9,7 @@ def startMs():
     output = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True).communicate()[0]
     
 def getMsStatus():
-    command = ['systemctl', 'status', 'msIot', '-l']
+    command = ['systemctl', 'status', 'msIot']
     output = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True).communicate()[0]
     print(output)
     return output
