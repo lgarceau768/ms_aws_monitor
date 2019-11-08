@@ -95,7 +95,9 @@ def updateIpTables():
 def recordDay():
     # will just output datetime.datetime.today() to the text file
     with open('/home/User1/ms_aws_monitor/data/update.txt', 'w') as file:
-        file.write(str(datetime.datetime.today())+'\n')
+        date = str(datetime.datetime.today())
+        print(date)
+        file.write(date+'\n')
         file.close()
 
 def checkForUpdate():
