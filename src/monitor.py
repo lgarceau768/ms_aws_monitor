@@ -63,10 +63,10 @@ def removeOldFiles():
 
 def gitPull():
     cwd = os.getcwd()
-    os.system('cd /home/User1/msV2')
-    os.system('git stash')
-    os.system('git pull https://lgarceau768:Spook524*@github.com/lgarceau768/ms_aws_monitor.git > /home/User1/ms_aws_monitor/logs/%s_%s_pullLog.log' % (deviceName, datetime.datetime.now().isoformat()))
-    os.system('cd %s' % cwd)
+    cd = 'cd /home/User1/msV2; git stash'
+    end = 'cd %s ' % cwd
+    pull = 'git pull https://lgarceau768:Spook524*@github.com/lgarceau768/ms_aws_monitor.git > /home/User1/ms_aws_monitor/logs/%s_%s_pullLog.log;' % (deviceName, datetime.datetime.now().isoformat())    
+    os.system(cd+pull+end)
 
 def updateIpTables():
     ip = nslookup(hostname)
