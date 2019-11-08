@@ -65,7 +65,7 @@ def gitPull():
     cwd = os.getcwd()
     cd = 'cd /home/User1/msV2; git stash;'
     end = 'cd %s ' % cwd
-    pull = 'git pull https://lgarceau768:Spook524*@github.com/lgarceau768/ms_aws_monitor.git > /home/User1/ms_aws_monitor/logs/%s_%s_pullLog.log;' % (deviceName, datetime.datetime.now().isoformat())    
+    pull = 'git pull https://lgarceau768:Spook524*@github.com/lgarceau768/msV2.git > /home/User1/ms_aws_monitor/logs/%s_%s_pullLog.log;' % (deviceName, datetime.datetime.now().isoformat())    
     os.system(cd+pull+end)
 
 def updateIpTables():
