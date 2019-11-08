@@ -103,8 +103,8 @@ def checkForUpdate():
     with open('/home/User1/ms_aws_monitor/data/update.txt', 'r') as file:
         if len(file.readlines()) > 1:
             line = file.readlines()[0].strip()
-
     today = str(datetime.datetime.today())
+    print(line+ '   vs: '+today)
     if line != today:
         return True
     else:
