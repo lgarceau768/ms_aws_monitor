@@ -16,8 +16,8 @@ def nslookup(ip):
     p = subprocess.Popen(['nslookup', ip], stdout=subprocess.PIPE)
     (output, err) = p.communicate()
     output = output.decode('utf-8')
-    output = output.split('Address:')
-    print(output)
+    output = output.strip().split('Address: ')
+    print(output[len(output)-1])
 
 ### Main Loop
 nslookup(hostname)
