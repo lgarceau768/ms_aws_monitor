@@ -101,7 +101,8 @@ def recordDay():
 def checkForUpdate():
     line = ''
     with open('/home/User1/ms_aws_monitor/data/update.txt', 'r') as file:
-        line = file.readlines()[0].strip()
+        if len(file.readlines()) > 1:
+            line = file.readlines()[0].strip()
 
     today = str(datetime.datetime.today())
     if line != today:
