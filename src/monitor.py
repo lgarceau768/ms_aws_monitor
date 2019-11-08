@@ -15,8 +15,8 @@ def getStatus(process):
 def nslookup(ip):
     p = subprocess.Popen(['nslookup', ip], stdout=subprocess.PIPE)
     (output, err) = p.communicate()
+    output = output.decode('utf-8')
     print(output)
-
 
 ### Main Loop
 nslookup(hostname)
