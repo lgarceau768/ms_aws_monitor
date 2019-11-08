@@ -95,7 +95,7 @@ def updateIpTables():
 def recordDay():
     # will just output datetime.datetime.today() to the text file
     with open('/home/User1/ms_aws_monitor/data/update.txt', 'w') as file:
-        date = str(datetime.datetime.today())
+        date = str(datetime.datetime.today().split(' ')[0])
         print(date)
         file.write(date+'\n')
         file.close()
@@ -104,13 +104,13 @@ def checkForUpdate():
     line = ''
     with open('/home/User1/ms_aws_monitor/data/update.txt', 'r') as file:
         if len(file.readlines()) > 1:
-            line = file.readlines()[0].strip()
-    today = str(datetime.datetime.today())
+            line = file.readlines()[0].replace('\n', '').split(' ')[0]
+    today = str(datetime.datetime.today().split(' ')[0])
     print(line+ '   vs: '+today)
-    if line != today:
-        return True
-    else:
+    if line in today:
         return False
+    else:
+        return True
 
 ### Main Loop
 # pull and update iptables once a day
