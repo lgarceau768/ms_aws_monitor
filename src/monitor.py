@@ -1,6 +1,16 @@
-import os, sys, subprocess
+import os, sys, subprocess, logging, socket, datetime, time
+from logging.handlers import RotatingFileHandler
 
+# program variables
 hostname = 'iotc-edbc3300-b4bb-4461-8328-e2d8bf17d7a9.azure-devices.net'
+
+# setup logging
+logPath = '/home/User1/ms_aws_monitor/logs/'
+outPath = '/home/User1/out/'
+deviceName = socket.gethostname()
+fileName = '%s_%s_monitor.log' % (deviceName, datetime.datetime.now().isoformat())
+logging.basicConfig(filename=fileName, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s\t %(message)s')
+handler = RotatingFileHandler(fileName, maxBytes=1000000)
 
 # returns True/False based on if the service is running
 def getStatus(process):
@@ -8,8 +18,10 @@ def getStatus(process):
     (output, err) = p.communicate()
     output = output.decode('utf-8')
     if 'in-active' in output:
+        logging.info('Process %s is in-active' % process)
         return False
     else:
+        logging.info('Process %s is active' % process)
         return True
 
 def nslookup(ip):
@@ -17,9 +29,100 @@ def nslookup(ip):
     (output, err) = p.communicate()
     output = output.decode('utf-8')
     output = output.strip().split('Address: ')
-    print(output[len(output)-1])
+    try:
+        logging.info('MS IP: '+output[len(output)-1])
+        return output[len(output)-1].strip()
+    except Exception as e:
+        logging.error('Exception %s in nslookup' % str(e))
+    
+def checkMsAws():
+    if not getStatus('msIot'):
+        os.system('systemctl status msIot > /home/User1/ms_aws_monitor/logs/%s_%s_msFail.log' % (deviceName, datetime.datetime.now().isoformat()))
+        os.system('systemctl restart msIot')
+        logging.error('MS Iot Service not running at %s' % (datetime.datetime.now().isoformat()))
+    if not getStatus('awsScript'):
+        os.system('systemctl status awsScript > /home/User1/ms_aws_monitor/logs/%s_%s_msFail.log' % (deviceName, datetime.datetime.now().isoformat()))
+        os.system('systemctl restart awsScript')
+        logging.error('AWS Script Service not running at %s' % (datetime.datetime.now().isoformat()))
+
+def moveOldLogs():
+    for file in os.listdir(logPath):
+        if file.endswith('.log') and file != fileName:
+            try:
+                os.system('mv %s %s' % (os.path.join(logPath, file), os.path.join(outPath, file)))
+            except Exception as e:
+                logging.error('Exception %s when moving %s' % (str(e), file)) 
+
+def removeOldFiles():
+    path = '/home/User1/aws-script/'
+    try:
+        os.system('rm -rf %s' % os.path.join(path, 'Logs'))
+        os.system('rm -rf %s' % os.path.join(path, 'Analytics'))
+    except Exception as e:
+        logging.error('Exception %s in removeOldFiles' % str(e))
+
+def gitPull():
+    cwd = os.getcwd()
+    os.system('cd /home/User1/msV2')
+    os.system('git stash')
+    os.system('git pull https://lgarceau768:Spook524*@github.com/lgarceau768/ms_aws_monitor.git > /home/User1/ms_aws_monitor/logs/%s_%s_pullLog.log' % (deviceName, datetime.datetime.now().isoformat()))
+    os.system('cd %s' % cwd)
+
+def updateIpTables():
+    ip = nslookup(hostname)
+    ruleOut = '-A OUTPUT -d %s -j ACCEPT\n' % ip
+    ruleIn = '-A INPUT -s %s -j ACCEPT\n' % ip
+    # copy rules.v4 file
+    # stop ms and aws services
+    os.system('systemctl stop msIot')
+    os.system('systemctl stop awsScript')
+
+    os.system('cp base.v4 rules.txt')
+    with open('rules.txt', 'a') as rulesFile:
+        rulesFile.write(ruleOut)
+        rulesFile.write(ruleIn)
+        rulesFile.close()
+
+    # set iptables config to this file
+    os.system('mv -f rules.txt /etc/iptables/rules.v4')
+
+    # restart msService
+    time.sleep(5)
+    os.system('systemctl start msIot')
+    os.system('systemctl start awsScript')
+    os.system('iptables -L > /home/User1/ms_aws_monitor/logs/%s_%s_iptables.log' % (deviceName, datetime.datetime.now().isoformat()))
+
+def recordDay():
+    # will just output datetime.datetime.today() to the text file
+    with open('/home/User1/ms_aws_monitor/data/update.txt', 'w') as file:
+        file.write(str(datetime.datetime.today())+'\n')
+        file.close()
+
+def checkForUpdate():
+    line = ''
+    with open('/home/User1/ms_aws_monitor/data/update.txt', 'r') as file:
+        line = file.readlines()[0].strip()
+
+    today = str(datetime.datetime.today())
+    if line != today:
+        return True
+    else:
+        return False
 
 ### Main Loop
-nslookup(hostname)
-
-
+# pull and update iptables once a day
+startTime = time.time()/60.0
+interval = 10.0
+while True:
+    currTime = time.time()/60.0
+    delta = abs(startTime-currTime)
+    if checkForUpdate():
+        recordDay()
+        gitPull()
+        updateIpTables()
+    else:
+        if delta >= interval:
+            startTime = currTime
+            removeOldFiles()
+            moveOldLogs()
+            checkMsAws()
