@@ -1,4 +1,4 @@
-import os, sys, subprocess, logging, socket, datetime, time
+import os, sys, subprocess, logging, socket, datetime, time, psutil
 from logging.handlers import RotatingFileHandler
 
 # program variables
@@ -50,6 +50,7 @@ def getMsStatus():
                         for line in lines:
                             line = line.strip()
                             if 'disconnected' in line.lower():
+                                
                                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
@@ -129,13 +130,10 @@ interval = 0.5
 while True:
     currTime = time.time()/60.0
     delta = abs(startTime-currTime)
-    if checkForUpdate():
-        recordDay()
-        #gitPull()
-        #updateIpTables()
+    
     else:
         if delta >= interval:
             startTime = currTime
             removeOldFiles()
             moveOldLogs()
-            checkMsAws()
+            logging.info('Ms Status: '+getMsStatus())
