@@ -7,3 +7,4 @@ A service that is constantly running on a linux machine
 3. Need to make sure the logs and csv's dont fill up the disk
 4. Make sure the aws script is running
 5. Update the github repository
+6. Need to also update the ip-tables with an nslookup of the iot central instance
