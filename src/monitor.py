@@ -131,9 +131,9 @@ while True:
     currTime = time.time()/60.0
     delta = abs(startTime-currTime)
     
-    else:
-        if delta >= interval:
-            startTime = currTime
-            removeOldFiles()
-            moveOldLogs()
-            logging.info('Ms Status: '+getMsStatus())
+  
+    if delta >= interval:
+        startTime = currTime
+        removeOldFiles()
+        moveOldLogs()
+        logging.info('Ms Status: '+getMsStatus())
