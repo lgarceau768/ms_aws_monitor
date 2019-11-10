@@ -35,7 +35,6 @@ def nslookup(ip):
     except Exception as e:
         logging.error('Exception %s in nslookup' % str(e))
     
-<<<<<<< HEAD
 def getMsStatus():
     for proc in psutil.process_iter():
         try:
@@ -55,17 +54,6 @@ def getMsStatus():
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
     return False
-=======
-def checkMsAws():
-    if not getStatus('msIot'):
-        os.system('systemctl status msIot > /home/User1/ms_aws_monitor/logs/%s_%s_msFail.log' % (deviceName, datetime.datetime.now().isoformat()))
-        os.system('systemctl restart msIot')
-        logging.error('MS Iot Service not running at %s' % (datetime.datetime.now().isoformat()))
-    if not getStatus('awsScript'):
-        os.system('systemctl status awsScript > /home/User1/ms_aws_monitor/logs/%s_%s_msFail.log' % (deviceName, datetime.datetime.now().isoformat()))
-        os.system('systemctl restart awsScript')
-        logging.error('AWS Script Service not running at %s' % (datetime.datetime.now().isoformat()))
->>>>>>> 825b2dac11328a73ecd0beec8b25b1763feaf2b4
 
 def moveOldLogs():
     for file in os.listdir(logPath):
@@ -137,14 +125,14 @@ def checkForUpdate():
 ### Main Loop
 # pull and update iptables once a day
 startTime = time.time()/60.0
-interval = 10.0
+interval = 0.5
 while True:
     currTime = time.time()/60.0
     delta = abs(startTime-currTime)
     if checkForUpdate():
         recordDay()
-        gitPull()
-        updateIpTables()
+        #gitPull()
+        #updateIpTables()
     else:
         if delta >= interval:
             startTime = currTime
