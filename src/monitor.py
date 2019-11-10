@@ -119,7 +119,7 @@ def checkForUpdate():
 ### Main Loop
 # pull and update iptables once a day
 startTime = time.time()/60.0
-interval = 0.5
+interval = 5
 while True:
     currTime = time.time()/60.0
     delta = abs(startTime-currTime)
@@ -129,4 +129,9 @@ while True:
         startTime = currTime
         removeOldFiles()
         moveOldLogs()
-        logging.info('Ms Status: '+str(getMsStatus()))
+        state = getMsStatus()
+        logging.info('Ms Status: '+str(state))
+        if not state:
+            os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (str(socket.gethostname(), str(datetime.datetime.today()))))
+            os.system('systemctl restart msIot')
+        
