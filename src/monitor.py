@@ -15,6 +15,15 @@ def getMsStatus():
             print(proc.name())
             if 'msIot'.lower() in proc.name().lower():
                 return True
+            # need to also check the logs for the disconnected
+            for file in os.listdir('/home/User1/msV2/logs/'):
+                if file.endswith('.log'):
+                    with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
+                        lines = readFile.readlines()
+                        for line in lines:
+                            line = line.strip()
+                            if 'disconnected' in line.lower():
+                                return True
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
     return False
