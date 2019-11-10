@@ -45,6 +45,7 @@ def getMsStatus():
             # need to also check the logs for the disconnected
             for file in os.listdir('/home/User1/msV2/logs/'):
                 if file.endswith('.log'):
+                    print(file)
                     with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
                         lines = readFile.readlines()
                         for line in lines:
@@ -136,4 +137,4 @@ while True:
         startTime = currTime
         removeOldFiles()
         moveOldLogs()
-        logging.info('Ms Status: '+getMsStatus())
+        logging.info('Ms Status: '+str(getMsStatus()))
