@@ -75,6 +75,7 @@ def gitPull():
 
 def updateIpTables():
     ip = nslookup(hostname)
+    print(ip)
     ruleOut = '-A OUTPUT -d %s -j ACCEPT\n' % ip
     ruleIn = '-A INPUT -s %s -j ACCEPT\n' % ip
     # copy rules.v4 file
