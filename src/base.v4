@@ -178,6 +178,3 @@
 -A OUTPUT -m iprange --dst-range 52.39.0.0-52.39.255.255 -j ACCEPT
 -A OUTPUT -d 137.117.83.38 -j ACCEPT
 -A INPUT -s 137.117.83.38 -j ACCEPT
-
-COMMIT
-# Completed on Fri Aug  9 13:58:56 2019

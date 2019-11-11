@@ -76,7 +76,7 @@ def gitPull():
 def updateIpTables():
     ip = nslookup(hostname)
     print(ip)
-    ruleOut = '-A OUTPUT -d %s -j ACCEPT\n' % ip
+    ruleOut = '\n-A OUTPUT -d %s -j ACCEPT\n' % ip
     ruleIn = '-A INPUT -s %s -j ACCEPT\n' % ip
     # copy rules.v4 file
     # stop ms and aws services
@@ -87,6 +87,7 @@ def updateIpTables():
     with open('rules.txt', 'a') as rulesFile:
         rulesFile.write(ruleOut)
         rulesFile.write(ruleIn)
+        rulesFile.write('COMMIT')
         rulesFile.close()
 
     # set iptables config to this file
