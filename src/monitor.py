@@ -134,6 +134,6 @@ while True:
         logging.info('Ms Status: '+str(state))
         if not state:
             logging.info('Restarting')
-            os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (str(socket.gethostname(), str(datetime.datetime.today()))))
+            os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, str(datetime.datetime.today())))
             os.system('systemctl restart msIot')
         
