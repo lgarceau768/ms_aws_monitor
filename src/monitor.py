@@ -5,7 +5,7 @@ from logging.handlers import RotatingFileHandler
 hostname = 'iotc-edbc3300-b4bb-4461-8328-e2d8bf17d7a9.azure-devices.net'
 
 # setup logging
-logPath = '/home/User1/ms_aws_monitor/logs/'
+logPath = '/home/User1/ms_aws_monitor/src/logs/'
 outPath = '/home/User1/out/'
 deviceName = socket.gethostname()
 fileName = '%s_%s_monitor.log' % (deviceName, datetime.datetime.now().isoformat())
@@ -37,10 +37,10 @@ def nslookup(ip):
     
 def getMsStatus():
     if getStatus('msIot'):
-        for file in os.listdir('/home/User1/msV2/logs/'):
+        for file in os.listdir('/home/User1/msV2/src/logs/'):
             if file.endswith('.log'):
                 print(file)
-                with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
+                with open(os.path.join('/home/User1/msV2/src/logs', file), 'r') as readFile:
                     lines = readFile.readlines()
                     for line in lines:
                         line = line.strip()
@@ -69,7 +69,7 @@ def gitPull():
     cwd = os.getcwd()
     cd = 'cd /home/User1/msV2; git stash;'
     end = 'cd %s ' % cwd
-    pull = 'git pull https://lgarceau768:Spook524*@github.com/lgarceau768/msV2.git > /home/User1/ms_aws_monitor/logs/%s_%s_pullLog.log;' % (deviceName, datetime.datetime.now().isoformat())    
+    pull = 'git pull https://lgarceau768:Spook524*@github.com/lgarceau768/msV2.git > /home/User1/ms_aws_monitor//src/logs/%s_%s_pullLog.log;' % (deviceName, datetime.datetime.now().isoformat())    
     os.system(cd+pull+end)
 
 def updateIpTables():
@@ -94,7 +94,7 @@ def updateIpTables():
     time.sleep(5)
     os.system('systemctl start msIot')
     os.system('systemctl start awsScript')
-    os.system('iptables -L > /home/User1/ms_aws_monitor/logs/%s_%s_iptables.log' % (deviceName, datetime.datetime.now().isoformat()))
+    os.system('iptables -L > /home/User1/ms_aws_monitor/src/logs/%s_%s_iptables.log' % (deviceName, datetime.datetime.now().isoformat()))
 
 def recordDay():
     # will just output datetime.datetime.today() to the text file
