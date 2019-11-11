@@ -87,7 +87,7 @@ def updateIpTables():
     with open('rules.txt', 'a') as rulesFile:
         rulesFile.write(ruleOut)
         rulesFile.write(ruleIn)
-        rulesFile.write('COMMIT')
+        rulesFile.write('COMMIT\n')
         rulesFile.close()
 
     # set iptables config to this file
