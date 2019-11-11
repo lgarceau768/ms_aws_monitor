@@ -121,6 +121,7 @@ def checkForUpdate():
 # pull and update iptables once a day
 startTime = time.time()/60.0
 interval = 0.5
+moveOldLogs()
 while True:
     currTime = time.time()/60.0
     delta = abs(startTime-currTime)
@@ -129,7 +130,6 @@ while True:
     if delta >= interval:
         startTime = currTime
         removeOldFiles()
-        moveOldLogs()
         state = getMsStatus()
         logging.info('Ms Status: '+str(state))
         if not state:
