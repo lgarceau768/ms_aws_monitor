@@ -37,10 +37,10 @@ def nslookup(ip):
     
 def getMsStatus():
     if getStatus('msIot'):
-        for file in os.listdir('/home/User1/msV2/src/logs/'):
+        for file in os.listdir('/home/User1/msV2/logs/'):
             if file.endswith('.log'):
                 print(file)
-                with open(os.path.join('/home/User1/msV2/src/logs', file), 'r') as readFile:
+                with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
                     lines = readFile.readlines()
                     for line in lines:
                         line = line.strip()
