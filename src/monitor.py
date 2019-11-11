@@ -17,7 +17,7 @@ def getStatus(process):
     p = subprocess.Popen(['systemctl', 'is-active', process], stdout=subprocess.PIPE)
     (output, err) = p.communicate()
     output = output.decode('utf-8')
-    if 'in-active' in output:
+    if 'inactive' in output:
         logging.info('Process %s is in-active' % process)
         return False
     else:
