@@ -9,6 +9,7 @@ logPath = '/home/User1/ms_aws_monitor/src/logs/'
 outPath = '/home/User1/out/'
 deviceName = socket.gethostname()
 fileName = '%s_%s_monitor.log' % (deviceName, datetime.datetime.now().isoformat())
+fileName = os.path.join(logPath, fileName)
 logging.basicConfig(filename=fileName, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s\t %(message)s')
 handler = RotatingFileHandler(fileName, maxBytes=1000000)
 
