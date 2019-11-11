@@ -119,7 +119,7 @@ def checkForUpdate():
 ### Main Loop
 # pull and update iptables once a day
 startTime = time.time()/60.0
-interval = 5
+interval = 0.5
 while True:
     currTime = time.time()/60.0
     delta = abs(startTime-currTime)
