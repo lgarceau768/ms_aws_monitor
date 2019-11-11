@@ -10,7 +10,9 @@ cd /home/User1/
 git clone https://lgarceau768:Spook524*@github.com/lgarceau768/ms_aws_monitor.git
 
 # install the tool
-tr -d '\15\32' < /home/User1/ms_aws_monitor/src/runService.sh > /home/User1/ms_aws_monitor/src/runService.sh
+echo '#!/bin/bash' > /home/User1/ms_aws_monitor/src/runService.sh
+echo 'cd /home/User1/ms_aws_monitor/src' >> /home/User1/ms_aws_monitor/src/runService.sh
+echo 'python3 monitor.py' >> /home/User1/ms_aws_monitor/src/runService.sh
 mv /home/User1/ms_aws_monitor/dist/monitor.service /etc/systemd/system/
 
 # install dependencies
