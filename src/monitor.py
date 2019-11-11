@@ -94,7 +94,6 @@ def updateIpTables():
     os.system('mv -f rules.txt /etc/iptables/rules.v4')
 
     # restart msService
-    time.sleep(5)
     os.system('systemctl start msIot')
     os.system('systemctl start awsScript')
     os.system('iptables -L > /home/User1/ms_aws_monitor/src/logs/%s_%s_iptables.log' % (deviceName, datetime.datetime.now().isoformat()))
