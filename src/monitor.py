@@ -57,9 +57,18 @@ def getMsStatus():
                     for line in lines:
                         line = line.strip()
                         logging.info(line.lower())
-                        if ('error' in line.lower() and not 'without' in line.lower()) or 'disconnected' in line.lower():         
-                            logging.info('msStatus fail: %s' % line)               
+                        error = False
+                        if 'error' in line.lower():
+                            split = line.lower().split(' ')
+                            if len(split) >= 3:
+                                if 'error' in split[2]:
+                                    error = True
+                        elif 'disconnected' in line.lower():
+                            error = True
+                        if error = True:
+                            logging.info('Error in ms log: '+line.lower())
                             return False
+                        return True
         return True
     return False
 
