@@ -56,7 +56,7 @@ def getMsStatus():
                     lines = readFile.readlines()
                     for line in lines:
                         line = line.strip()
-                        if 'disconnected' in line.lower() or 'error' in line.lower():         
+                        if ('disconnected' in line.lower() and 'without' not in line.lower()) or 'error' in line.lower():         
                             logging.info('msStatus fail: %s' % line)               
                             return False
         return True
