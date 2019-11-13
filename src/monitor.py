@@ -40,7 +40,7 @@ def getMsStatus():
     if getStatus('msIot'):
         for file in os.listdir('/home/User1/msV2/logs/'):
             if file.endswith('.log'):
-                print(file)
+                #print(file)
                 with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
                     lines = readFile.readlines()
                     for line in lines:
@@ -76,7 +76,7 @@ def gitPull():
 
 def updateIpTables():
     ip = nslookup(hostname)
-    print(ip)
+    #   print(ip)
     ruleOut = '\n-A OUTPUT -d %s -j ACCEPT\n' % ip
     ruleIn = '-A INPUT -s %s -j ACCEPT\n' % ip
     # copy rules.v4 file
@@ -104,7 +104,7 @@ def recordDay():
     # will just output datetime.datetime.today() to the text file
     with open('/home/User1/ms_aws_monitor/data/update.txt', 'w') as file:
         date = str(datetime.datetime.today()).split(' ')[0]
-        print(date)
+        #print(date)
         file.write(date+'\n')
         file.close()
 
@@ -114,7 +114,7 @@ def checkForUpdate():
         if len(file.readlines()) > 1:
             line = file.readlines()[0].replace('\n', '').split(' ')[0]
     today = str(datetime.datetime.today()).split(' ')[0]
-    print(line+ '   vs: '+today)
+    #print(line+ '   vs: '+today)
     if line in today:
         return False
     else:
@@ -136,7 +136,7 @@ while True:
         startTime = currTime
         removeOldFiles()
         state = getMsStatus()
-        #logging.info('Ms Status: '+str(state))
+        logging.info('Ms Status: '+str(state))
         if not state:
             logging.info('Restarting')
             os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, str(datetime.datetime.today())))
