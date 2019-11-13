@@ -65,7 +65,7 @@ def getMsStatus():
                                     error = True
                         elif 'disconnected' in line.lower():
                             error = True
-                        if error = True:
+                        if error:
                             logging.info('Error in ms log: '+line.lower())
                             return False
                         return True
