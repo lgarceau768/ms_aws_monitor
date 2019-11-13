@@ -10,6 +10,17 @@ outPath = '/home/User1/out/'
 deviceName = socket.gethostname()
 fileName = '%s_%s_monitor.log' % (deviceName, datetime.datetime.now().isoformat())
 fileName = os.path.join(logPath, fileName)
+
+def moveOldLogs():
+    for file in os.listdir(logPath):
+        if file.endswith('.log') and file != fileName:
+            try:
+                os.system('mv %s %s' % (os.path.join(logPath, file), os.path.join(outPath, file)))
+            except Exception as e:
+                logging.error('Exception %s when moving %s' % (str(e), file)) 
+
+
+moveOldLogs()
 logging.basicConfig(filename=fileName, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s\t %(message)s')
 handler = RotatingFileHandler(fileName, maxBytes=1000000)
 
@@ -51,13 +62,6 @@ def getMsStatus():
         return True
     return False
 
-def moveOldLogs():
-    for file in os.listdir(logPath):
-        if file.endswith('.log') and file != fileName:
-            try:
-                os.system('mv %s %s' % (os.path.join(logPath, file), os.path.join(outPath, file)))
-            except Exception as e:
-                logging.error('Exception %s when moving %s' % (str(e), file)) 
 
 def removeOldFiles():
     path = '/home/User1/aws-script/'
@@ -125,7 +129,6 @@ def checkForUpdate():
 startTime = time.time()/60.0
 interval = 0.5
 
-moveOldLogs()
 updateIpTables()
 while True:
     currTime = time.time()/60.0
