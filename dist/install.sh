@@ -17,7 +17,7 @@ mv /home/User1/ms_aws_monitor/dist/monitor.service /etc/systemd/system/
 
 # install dependencies
 sudo apt-get install dnsutils -y
-
+python3 -m pip install psutil
 
 # enable / start the service
 systemctl enable monitor

@@ -45,7 +45,8 @@ def getMsStatus():
                     lines = readFile.readlines()
                     for line in lines:
                         line = line.strip()
-                        if 'disconnected' in line.lower():                        
+                        if 'disconnected' in line.lower() or 'error' in line.lower():         
+                            logging.info('msStatus fail: %s' % line)               
                             return False
         return True
     return False
@@ -135,7 +136,7 @@ while True:
         startTime = currTime
         removeOldFiles()
         state = getMsStatus()
-        logging.info('Ms Status: '+str(state))
+        #logging.info('Ms Status: '+str(state))
         if not state:
             logging.info('Restarting')
             os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, str(datetime.datetime.today())))
