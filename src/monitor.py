@@ -52,25 +52,26 @@ def getMsStatus():
         for file in os.listdir('/home/User1/msV2/logs/'):
             if file.endswith('.log'):
                 #print(file)
-                with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
-                    lines = readFile.readlines()
-                    for line in lines:
-                        line = line.strip()
-                        logging.info(line.lower())
-                        error = False
-                        if 'error' in line.lower():
-                            split = line.lower().split(' ')
-                            if len(split) >= 3:
-                                if 'error' in split[2]:
-                                    error = True
-                        elif 'disconnected' in line.lower():
-                            error = True
-                        if error:
-                            logging.info('Error in ms log: '+line.lower())
-                            return False
-                        return True
+                if 'msLog' in file:
+                    with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
+                        lines = readFile.readlines()
+                        for line in lines:
+                            line = line.strip()
+                            logging.info(line.lower())
+                            error = False
+                            if 'error' in line.lower():
+                                split = line.lower().split(' ')
+                                if len(split) >= 3:
+                                    if 'error' in split[2]:
+                                        error = True
+                            elif 'disconnected' in line.lower():
+                                error = True
+                            if error:
+                                logging.info('Error in ms log: '+line.lower())
+                                return False
+                            return True
         return True
-    return False
+    return getStatus('msIot')
 
 
 def removeOldFiles():
