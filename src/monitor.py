@@ -90,6 +90,15 @@ def gitPull():
     pull = 'git pull https://lgarceau768:Spook524*@github.com/lgarceau768/msV2.git > /home/User1/ms_aws_monitor//src/logs/%s_%s_pullLog.log;' % (deviceName, datetime.datetime.now().isoformat())    
     os.system(cd+pull+end)
 
+def notAllNumbers(ip):
+    # given an ip address remove .s
+    ip = ip.replace('.','')
+    numbers = ['0','1','2','3','4','5','6','7','8','9']
+    for char in ip:
+        if char not in numbers:
+            return False
+    return True
+
 def updateIpTables():
     os.system('/home/User1/emsa/cleariptables')
     ip = nslookup(hostname)
