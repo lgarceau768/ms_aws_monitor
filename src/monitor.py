@@ -22,7 +22,7 @@ def moveOldLogs():
 
 moveOldLogs()
 logging.basicConfig(filename=fileName, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s\t %(message)s')
-handler = RotatingFileHandler(fileName, maxBytes=1000000)
+handler = RotatingFileHandler(fileName, maxBytes=10000000)
 
 # returns True/False based on if the service is running
 def getStatus(process):
@@ -137,9 +137,10 @@ def checkForUpdate():
 ### Main Loop
 # pull and update iptables once a day
 startTime = time.time()/60.0
-interval = 0.5
+interval = 10
 
 updateIpTables()
+removeOldFiles()
 while True:
     currTime = time.time()/60.0
     delta = abs(startTime-currTime)
@@ -147,7 +148,7 @@ while True:
   
     if delta >= interval:
         startTime = currTime
-        removeOldFiles()
+        
         state = getMsStatus()
         logging.info('Ms Status: '+str(state))
         if not state:
