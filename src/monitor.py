@@ -89,6 +89,7 @@ def gitPull():
     os.system(cd+pull+end)
 
 def updateIpTables():
+    os.system('/home/User1/emsa/cleariptables')
     ip = nslookup(hostname)
     #   print(ip)
     ruleOut = '\n-A OUTPUT -d %s -j ACCEPT\n' % ip
