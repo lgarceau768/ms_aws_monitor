@@ -91,6 +91,10 @@ def gitPull():
 def updateIpTables():
     os.system('/home/User1/emsa/cleariptables')
     ip = nslookup(hostname)
+    if notAllNumbers(ip):
+        os.system('iptables-restore < /etc/iptables/rules.v4')
+        os.system('echo %s > /home/User1/out/%s_NSLOOKUPFAIL.log' % (datetime.datetime.now(), socket.gethostname()))
+        return False
     #   print(ip)
     ruleOut = '\n-A OUTPUT -d %s -j ACCEPT\n' % ip
     ruleIn = '-A INPUT -s %s -j ACCEPT\n' % ip
@@ -114,6 +118,7 @@ def updateIpTables():
     os.system('systemctl start msIot')
     os.system('systemctl start awsScript')
     os.system('iptables -L > /home/User1/ms_aws_monitor/src/logs/%s_%s_iptables.log' % (deviceName, datetime.datetime.now().isoformat()))
+    return True
 
 def recordDay():
     # will just output datetime.datetime.today() to the text file
@@ -140,20 +145,20 @@ def checkForUpdate():
 startTime = time.time()/60.0
 interval = 10
 
-updateIpTables()
-removeOldFiles()
-while True:
-    currTime = time.time()/60.0
-    delta = abs(startTime-currTime)
+if updateIpTables():
+    removeOldFiles()
+    while True:
+        currTime = time.time()/60.0
+        delta = abs(startTime-currTime)
+        
     
-  
-    if delta >= interval:
-        startTime = currTime
-        
-        state = getMsStatus()
-        logging.info('Ms Status: '+str(state))
-        if not state:
-            logging.info('Restarting')
-            os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, str(datetime.datetime.today())))
-            os.system('systemctl restart msIot')
-        
+        if delta >= interval:
+            startTime = currTime
+            
+            state = getMsStatus()
+            logging.info('Ms Status: '+str(state))
+            if not state:
+                logging.info('Restarting')
+                os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, str(datetime.datetime.today())))
+                os.system('systemctl restart msIot')
+            
