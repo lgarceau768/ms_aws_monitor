@@ -22,7 +22,7 @@ def moveOldLogs():
 
 moveOldLogs()
 logging.basicConfig(filename=fileName, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s\t %(message)s')
-handler = RotatingFileHandler(fileName, maxBytes=10000000)
+#handler = RotatingFileHandler(fileName, maxBytes=10000000)
 
 # returns True/False based on if the service is running
 def getStatus(process):
