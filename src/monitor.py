@@ -102,6 +102,7 @@ def notAllNumbers(ip):
 def updateIpTables():
     os.system('/home/User1/emsa/cleariptables')
     ip = nslookup(hostname)
+    logging.info('ip: %s' % ip)
     if notAllNumbers(ip):
         os.system('iptables-restore < /etc/iptables/rules.v4')
         os.system('echo %s > /home/User1/out/%s_NSLOOKUPFAIL.log' % (datetime.datetime.now(), socket.gethostname()))
@@ -152,7 +153,7 @@ def checkForUpdate():
         return True
 
 ### Main Loop
-# pull and update iptables once a day
+# pull and update iptabl es once a day
 startTime = time.time()/60.0
 interval = 10
 
