@@ -157,6 +157,8 @@ def checkForUpdate():
 # pull and update iptabl es once a day
 startTime = time.time()/60.0
 interval = 10
+os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT')
+os.system('iptables -L > /home/User1/iptablesTest.txt')
 returnVal = updateIpTables()
 print(returnVal)
 if returnVal:
