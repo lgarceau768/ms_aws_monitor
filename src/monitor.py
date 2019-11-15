@@ -156,8 +156,9 @@ def checkForUpdate():
 # pull and update iptabl es once a day
 startTime = time.time()/60.0
 interval = 10
-
-if updateIpTables():
+returnVal = updateIpTables()
+print(returnVal)
+if returnVal:
     removeOldFiles()
     while True:
         currTime = time.time()/60.0
