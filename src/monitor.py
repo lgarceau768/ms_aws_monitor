@@ -104,7 +104,7 @@ def updateIpTables():
     os.system('/home/User1/emsa/cleariptables')
     ip = nslookup(hostname)
     print('ip: %s' % ip)
-    if notAllNumbers(ip):
+    if not notAllNumbers(ip):
         os.system('iptables-restore < /etc/iptables/rules.v4')
         os.system('echo %s > /home/User1/out/%s_NSLOOKUPFAIL.log' % (datetime.datetime.now(), socket.gethostname()))
         return False
