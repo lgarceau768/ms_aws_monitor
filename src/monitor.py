@@ -92,10 +92,11 @@ def gitPull():
 
 def notAllNumbers(ip):
     # given an ip address remove .s
-    ip = ip.replace('.','')
+    ip = ip.replace('.','').strip()
     numbers = ['0','1','2','3','4','5','6','7','8','9']
     for char in ip:
         if char not in numbers:
+            print(char)
             return False
     return True
 
