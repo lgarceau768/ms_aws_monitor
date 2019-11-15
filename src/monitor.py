@@ -101,7 +101,7 @@ def notAllNumbers(ip):
     return True
 
 def updateIpTables():
-    os.system('/home/User1/emsa/cleariptables')
+    os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT')
     ip = nslookup(hostname)
     print('ip: %s' % ip)
     if not notAllNumbers(ip):
