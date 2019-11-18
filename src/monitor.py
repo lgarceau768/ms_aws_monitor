@@ -60,6 +60,8 @@ def getMsStatus():
                             line = line.strip()
                             logging.info(line.lower())
                             error = False
+                            if 'out of memory' in line.lower():
+                                error = True
                             if 'error' in line.lower():
                                 split = line.lower().split(' ')
                                 if len(split) >= 3:
