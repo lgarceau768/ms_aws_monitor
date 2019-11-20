@@ -61,9 +61,9 @@ def getMsStatus():
                     lines = readFile.readlines()
                     logging.info(lines[2])
                     for line in lines:
-                        logging.info(line.lower())
+                        #logging.info(line.lower())
                         error = False
-                        spaces = line.lower().split
+                        
                         if 'ProtocolClientError'.lower() in line.lower():
                             error = True
                         if 'out of memory' in line.lower():
