@@ -59,6 +59,7 @@ def getMsStatus():
                 with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
                     logging.info('reading the file')
                     lines = readFile.readlines()
+                    logging.info(str(lines))
                     for line in lines:
                         line = line.strip()
                         logging.info(line.lower())
