@@ -52,11 +52,13 @@ def getMsStatus():
     if getStatus('msIot'):
         logging.info('getting the status from log file')
         for file in os.listdir('/home/User1/msV2/logs/'):
+            file = file.strip()
             logging.info(file)
-            if '.log' in file:
-                #print(file)
+            if 'msLog' in file:
+                logging.info('past first')
                 if 'msLog' in file:
-                    with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
+                    with open(os.path.join('/home/User1/msV2/src/logs', file), 'r') as readFile:
+                        logging.info('reading the file')
                         lines = readFile.readlines()
                         for line in lines:
                             line = line.strip()
