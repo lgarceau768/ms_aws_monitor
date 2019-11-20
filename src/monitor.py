@@ -50,7 +50,9 @@ def nslookup(ip):
     
 def getMsStatus():
     if getStatus('msIot'):
+        logging.info('getting the status from log file')
         for file in os.listdir('/home/User1/msV2/logs/'):
+            logging.info(file)
             if file.endswith('.log'):
                 #print(file)
                 if 'msLog' in file:
@@ -58,7 +60,7 @@ def getMsStatus():
                         lines = readFile.readlines()
                         for line in lines:
                             line = line.strip()
-                            logging.getLogger().info(line.lower())
+                            logging.info(line.lower())
                             error = False
                             spaces = line.lower().split
                             if 'ProtocolClientError'.lower() in line.lower():
@@ -161,11 +163,12 @@ def checkForUpdate():
 ### Main Loop
 # pull and update iptabl es once a day
 startTime = time.time()/60.0
-interval = 10
-time.sleep(120) # wait a minute after boot up
+interval = 0.5
+#time.sleep(120) # wait a minute after boot up
 os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT')
 os.system('iptables -L > /home/User1/iptablesTest.txt')
-returnVal = updateIpTables()
+#returnVal = updateIpTables()
+returnVal = True
 print(returnVal)
 if returnVal:
     removeOldFiles()
