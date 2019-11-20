@@ -78,7 +78,6 @@ def getMsStatus():
                         if error:
                             logging.info('Error in ms log: '+line.lower())
                             return False
-                        return True
         return True
     return getStatus('msIot')
 
