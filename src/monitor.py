@@ -56,7 +56,7 @@ def getMsStatus():
             logging.info(file)
             if 'msLog' in file:
                 logging.info('past first')
-                with open(os.path.join('/home/User1/msV2/src/logs', file), 'r') as readFile:
+                with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
                     logging.info('reading the file')
                     lines = readFile.readlines()
                     for line in lines:
