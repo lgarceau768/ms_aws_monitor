@@ -163,12 +163,12 @@ def checkForUpdate():
 ### Main Loop
 # pull and update iptabl es once a day
 startTime = time.time()/60.0
-interval = 0.5
-#time.sleep(120) # wait a minute after boot up
+interval = 10
+time.sleep(120) # wait a minute after boot up
 os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT')
 os.system('iptables -L > /home/User1/iptablesTest.txt')
-#returnVal = updateIpTables()
-returnVal = True
+returnVal = updateIpTables()
+#returnVal = True
 print(returnVal)
 if returnVal:
     removeOldFiles()
