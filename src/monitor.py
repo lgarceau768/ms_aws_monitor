@@ -56,30 +56,29 @@ def getMsStatus():
             logging.info(file)
             if 'msLog' in file:
                 logging.info('past first')
-                if 'msLog' in file:
-                    with open(os.path.join('/home/User1/msV2/src/logs', file), 'r') as readFile:
-                        logging.info('reading the file')
-                        lines = readFile.readlines()
-                        for line in lines:
-                            line = line.strip()
-                            logging.info(line.lower())
-                            error = False
-                            spaces = line.lower().split
-                            if 'ProtocolClientError'.lower() in line.lower():
-                                error = True
-                            if 'out of memory' in line.lower():
-                                error = True
-                            if 'error' in line.lower():
-                                split = line.lower().split(' ')
-                                if len(split) >= 3:
-                                    if 'error' in split[2]:
-                                        error = True
-                            elif 'disconnected' in line.lower():
-                                error = True
-                            if error:
-                                logging.info('Error in ms log: '+line.lower())
-                                return False
-                            return True
+                with open(os.path.join('/home/User1/msV2/src/logs', file), 'r') as readFile:
+                    logging.info('reading the file')
+                    lines = readFile.readlines()
+                    for line in lines:
+                        line = line.strip()
+                        logging.info(line.lower())
+                        error = False
+                        spaces = line.lower().split
+                        if 'ProtocolClientError'.lower() in line.lower():
+                            error = True
+                        if 'out of memory' in line.lower():
+                            error = True
+                        if 'error' in line.lower():
+                            split = line.lower().split(' ')
+                            if len(split) >= 3:
+                                if 'error' in split[2]:
+                                    error = True
+                        elif 'disconnected' in line.lower():
+                            error = True
+                        if error:
+                            logging.info('Error in ms log: '+line.lower())
+                            return False
+                        return True
         return True
     return getStatus('msIot')
 
