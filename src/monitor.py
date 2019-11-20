@@ -53,7 +53,7 @@ def getMsStatus():
         logging.info('getting the status from log file')
         for file in os.listdir('/home/User1/msV2/logs/'):
             logging.info(file)
-            if file.endswith('.log'):
+            if '.log' in file:
                 #print(file)
                 if 'msLog' in file:
                     with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
