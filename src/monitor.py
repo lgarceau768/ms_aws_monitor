@@ -1,4 +1,4 @@
-import os, sys, subprocess, logging, socket, datetime, time, psutil
+import os, sys, subprocess, logging, socket, datetime, time, psutil, urllib.request, json
 from logging.handlers import RotatingFileHandler
 
 # program variables
@@ -19,11 +19,12 @@ def moveOldLogs():
             except Exception as e:
                 logging.error('Exception %s when moving %s' % (str(e), file)) 
 
-
+# initial moving
 moveOldLogs()
 logging.basicConfig(filename=fileName, filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s\t %(message)s')
 handler = RotatingFileHandler(fileName, maxBytes=10000000)
 logging.getLogger().addHandler(handler)
+
 
 # returns True/False based on if the service is running
 def getStatus(process):
@@ -59,11 +60,9 @@ def getMsStatus():
                 with open(os.path.join('/home/User1/msV2/logs', file), 'r') as readFile:
                     logging.info('reading the file')
                     lines = readFile.readlines()
-                    logging.info(lines[2])
                     for line in lines:
                         #logging.info(line.lower())
-                        error = False
-                        
+                        error = False                        
                         if 'ProtocolClientError'.lower() in line.lower():
                             error = True
                         if 'out of memory' in line.lower():
@@ -81,7 +80,6 @@ def getMsStatus():
         return getStatus('msIot')
     return getStatus('msIot')
 
-
 def removeOldFiles():
     path = '/home/User1/aws-script/'
     try:
@@ -89,13 +87,6 @@ def removeOldFiles():
         os.system('rm -rf %s' % os.path.join(path, 'Analytics'))
     except Exception as e:
         logging.error('Exception %s in removeOldFiles' % str(e))
-
-def gitPull():
-    cwd = os.getcwd()
-    cd = 'cd /home/User1/msV2; git stash;'
-    end = 'cd %s ' % cwd
-    pull = 'git pull https://lgarceau768:Spook524*@github.com/lgarceau768/msV2.git > /home/User1/ms_aws_monitor//src/logs/%s_%s_pullLog.log;' % (deviceName, datetime.datetime.now().isoformat())    
-    os.system(cd+pull+end)
 
 def notAllNumbers(ip):
     # given an ip address remove .s
@@ -140,25 +131,45 @@ def updateIpTables():
     os.system('iptables -L > /home/User1/ms_aws_monitor/src/logs/%s_%s_iptables.log' % (deviceName, datetime.datetime.now().isoformat()))
     return True
 
-def recordDay():
-    # will just output datetime.datetime.today() to the text file
-    with open('/home/User1/ms_aws_monitor/data/update.txt', 'w') as file:
-        date = str(datetime.datetime.today()).split(' ')[0]
-        #print(date)
-        file.write(date+'\n')
-        file.close()
+def downloadFile():
+    url = 'https://ip-ranges.amazonaws.com/ip-ranges.json'
+    response = urllib.request.urlopen(url)
+    data = json.loads(response.read().decode())
+    return data
 
-def checkForUpdate():
-    line = ''
-    with open('/home/User1/ms_aws_monitor/data/update.txt', 'r') as file:
-        if len(file.readlines()) > 1:
-            line = file.readlines()[0].replace('\n', '').split(' ')[0]
-    today = str(datetime.datetime.today()).split(' ')[0]
-    #print(line+ '   vs: '+today)
-    if line in today:
-        return False
-    else:
-        return True
+def pullIps(data):
+    realData = data['prefixes']
+    ip = []
+    for item in realData:
+        if 'S3' in item['service']:
+            try:
+                ip.append(item['ip_prefix'])
+            except:
+                # just is an ipv6
+                pass
+    return ip
+
+def printAllIps(data):
+    for item in data:
+        print(item)
+
+def createRules(ips):
+    rules = []
+    for item in ips:
+        ip = item.strip()
+        ruleOut = '\n-A OUTPUT -d %s -j ACCEPT\n' % ip
+        ruleIn = '-A INPUT -s %s -j ACCEPT\n' % ip
+        rules.append(ruleIn)
+        rules.append(ruleOut)
+
+def nsLookupRemoteIt():
+    list = 'proxy50.rt3.io p50.rt3.io proxy51.rt3.io p51.rt3.io proxy53.remot3.it proxy55.remot3.it p55.rt3.io proxy2.remot3.it proxy6.remot3.it proxy13.remot3.it proxy15.rt3.io p15.rt3.io proxy16.rt3.io p16.rt3.io proxy17.rt3.io p17.rt3.io proxy18.remot3.it p18.rt3.io proxy19.remot3.it p19.rt3.io proxy21.remot3.it p21.rt3.io'.split(' ')
+    for hostname in list:
+        ip = nslookup(hostname)
+        if notAllNumbers(ip):
+            # the ip is valid
+            
+
 
 ### Main Loop
 # pull and update iptabl es once a day
