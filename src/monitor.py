@@ -118,6 +118,9 @@ def updateIpTables():
     with open('rules.txt', 'a') as rulesFile:
         rulesFile.write(ruleOut)
         rulesFile.write(ruleIn)
+        otherRules = pullRemoteAws()
+        for rule in otherRules:
+            rulesFile.write(rule)
         rulesFile.write('COMMIT\n')
         rulesFile.close()
 
@@ -161,13 +164,24 @@ def createRules(ips):
         ruleIn = '-A INPUT -s %s -j ACCEPT\n' % ip
         rules.append(ruleIn)
         rules.append(ruleOut)
+    return rules
 
-def nsLookupRemoteIt():
+def pullRemoteAws():
     list = 'proxy50.rt3.io p50.rt3.io proxy51.rt3.io p51.rt3.io proxy53.remot3.it proxy55.remot3.it p55.rt3.io proxy2.remot3.it proxy6.remot3.it proxy13.remot3.it proxy15.rt3.io p15.rt3.io proxy16.rt3.io p16.rt3.io proxy17.rt3.io p17.rt3.io proxy18.remot3.it p18.rt3.io proxy19.remot3.it p19.rt3.io proxy21.remot3.it p21.rt3.io'.split(' ')
+    ips = []
     for hostname in list:
         ip = nslookup(hostname)
         if notAllNumbers(ip):
             # the ip is valid
+            ips.append(ip)
+    rules = createRules(ips)
+    awsRules = pullIps(downloadFile())
+    awsRules = createRules(awsRules)
+    for item in awsRules:
+        rules.append(item)
+    return rules
+    
+        
             
 
 
