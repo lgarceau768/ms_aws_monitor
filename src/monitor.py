@@ -118,9 +118,9 @@ def updateIpTables():
     with open('rules.txt', 'a') as rulesFile:
         rulesFile.write(ruleOut)
         rulesFile.write(ruleIn)
-        # otherRules = pullRemoteAws()
-        # for rule in otherRules:
-        #     rulesFile.write(rule)
+        otherRules = pullRemoteAws()
+        for rule in otherRules:
+            rulesFile.write(rule)
         rulesFile.write('COMMIT\n')
         rulesFile.close()
 
@@ -178,7 +178,8 @@ def pullRemoteAws():
     awsRules = pullIps(downloadFile())
     awsRules = createRules(awsRules)
     for item in awsRules:
-        rules.append(item)
+        if item not in rules:
+            rules.append(item)
     return rules
     
         
@@ -189,7 +190,7 @@ def pullRemoteAws():
 # pull and update iptabl es once a day
 startTime = time.time()/60.0
 interval = 10
-time.sleep(120) # wait a minute after boot up
+time.sleep(1) # wait a minute after boot up
 os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT')
 os.system('iptables -L > /home/User1/iptablesTest.txt')
 returnVal = updateIpTables()
