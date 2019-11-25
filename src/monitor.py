@@ -73,7 +73,10 @@ def getMsStatus():
                                 if 'error' in split[2]:
                                     error = True
                         elif 'disconnected' in line.lower():
-                            error = True
+                            if 'with result code: 1' in line.lower():
+                                error = False
+                            else:
+                                error = True
                         if error:
                             logging.info('Error in ms log: '+line.lower())
                             return False
