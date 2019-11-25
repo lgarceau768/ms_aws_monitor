@@ -177,4 +177,5 @@
 -A INPUT -m iprange --src-range 52.39.0.0-52.39.255.255 -j ACCEPT
 -A OUTPUT -m iprange --dst-range 52.39.0.0-52.39.255.255 -j ACCEPT
 -A OUTPUT -d 137.117.83.38 -j ACCEPT
--A INPUT -s 137.117.83.38 -j ACCEPT
+-A INPUT -s 137.117.83.38 -j ACCEPT 
+#COMMIT 
