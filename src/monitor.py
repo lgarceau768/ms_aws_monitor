@@ -121,9 +121,9 @@ def updateIpTables():
     with open('rules.txt', 'a') as rulesFile:
         rulesFile.write(ruleOut)
         rulesFile.write(ruleIn)
-        #otherRules = pullRemoteAws()
-        #for rule in otherRules:
-        #    rulesFile.write(rule)
+        otherRules = pullRemoteAws()
+        for rule in otherRules:
+            rulesFile.write(rule)
         rulesFile.write('COMMIT\n')
         rulesFile.close()
 
