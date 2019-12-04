@@ -12,7 +12,7 @@
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m state --state INVALID -j DROP
 -A INPUT -p udp -m multiport --sports 5959:5979 -j ACCEPT
--A INPUT -p udp -m multiport --dports 20000:40000 -j ACCEPTT
+-A INPUT -p udp -m multiport --dports 20000:40000 -j ACCEPT
 -A INPUT -p icmp -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p udp -m udp --sport 123 -m state --state ESTABLISHED -j ACCEPT
 -A OUTPUT -o wlan0 -p tcp -m tcp --dport 443 -m state --state NEW -m recent --update --seconds 60 --hitcount 8 --rttl --name DEFAULT --mask 255.255.255.255 --rsource -j LOG --log-prefix "FW_DROPPED: "
