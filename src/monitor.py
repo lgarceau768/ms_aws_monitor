@@ -213,6 +213,13 @@ if returnVal:
             logging.info('Ms Status: '+str(state))
             if not state:
                 logging.info('Restarting')
-                os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, str(datetime.datetime.today())))
+                timestamp = datetime.datetime.now()
+                year = str(timestamp.year)
+                month = str(timestamp.month)
+                day = str(timestamp.day)
+                hour = str(timestamp.hour)
+                minute = str(timestamp.minute)
+                ts = str(day+month+year+hour+minute)
+                os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, ts))
                 os.system('systemctl restart msIot')
             
