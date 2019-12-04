@@ -121,9 +121,9 @@ def updateIpTables():
     with open('rules.txt', 'a') as rulesFile:
         rulesFile.write(ruleOut)
         rulesFile.write(ruleIn)
-        #otherRules = pullRemoteAws()
-        #for rule in otherRules:
-        #    rulesFile.write(rule)
+        otherRules = pullRemoteAws()
+        for rule in otherRules:
+            rulesFile.write(rule)
         rulesFile.write('COMMIT\n')
         rulesFile.close()
 
@@ -190,7 +190,7 @@ def pullRemoteAws():
 
 
 ### Main Loop
-# pull and update iptabl es once a day
+# pull and update iptables once a day
 startTime = time.time()/60.0
 interval = 10
 time.sleep(120) # wait a minute after boot up
