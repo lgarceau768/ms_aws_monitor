@@ -190,6 +190,16 @@ def pullRemoteAws():
 
 
 ### Main Loop
+
+# need to check if the device is connected to the internet
+internetActive = False
+while not internetActive:
+    try:
+        urllib.request.urlopen('http://216.58.192.142')
+        internetActive = True
+    except urllib.URLError as err:
+        internetActive = False
+
 # pull and update iptables once a day
 startTime = time.time()/60.0
 interval = 10
@@ -204,7 +214,7 @@ if returnVal:
     while True:
         currTime = time.time()/60.0
         delta = abs(startTime-currTime)
-        
+
     
         if delta >= interval:
             startTime = currTime
