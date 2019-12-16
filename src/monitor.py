@@ -198,7 +198,7 @@ while not internetActive:
     try:
         urllib.request.urlopen('http://216.58.192.142')
         internetActive = True
-    except urllib.URLError as err:
+    except Exception as err:
         internetActive = False
 
 # pull and update iptables once a day
