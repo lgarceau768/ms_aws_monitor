@@ -192,6 +192,7 @@ def pullRemoteAws():
 ### Main Loop
 
 # need to check if the device is connected to the internet
+os.system('/home/User1/emsa/cleariptables')
 internetActive = False
 while not internetActive:
     try:
