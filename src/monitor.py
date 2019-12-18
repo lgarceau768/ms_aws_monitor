@@ -242,6 +242,7 @@ if returnVal:
                     os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, ts))
                     os.system('systemctl restart msIot')
         else:
+            logging.info('MS Not Installed')
             # need to check to update the iptables
             if delta >= (interval*144):
                 # check every day
