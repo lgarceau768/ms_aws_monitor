@@ -246,4 +246,13 @@ if returnVal:
             if delta >= (interval*144):
                 # check every day
                 os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT')
-                updateIpTables()
+                internetActive = False
+                while not internetActive:
+                    try:
+                        urllib.request.urlopen('http://216.58.192.142')
+                        internetActive = True
+                    except Exception as err:
+                        internetActive = False
+                if internetActive:
+                    updateIpTables()
+                    startTime = currTime
