@@ -185,7 +185,11 @@ def pullRemoteAws():
             rules.append(item)
     return rules
     
-        
+def checkMS():
+    # wont have the below file unless it is using the ms platform
+    if os.path.isfile('/home/User1/msV2/src/config.ini'):
+        return True
+    return False
             
 
 
@@ -209,6 +213,10 @@ os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables 
 os.system('iptables -L > /home/User1/iptablesTest.txt')
 returnVal = updateIpTables()
 #returnVal = True
+
+# going to check to see if the ms program is installed
+msInstalled = checkMS()
+
 print(returnVal)
 if returnVal:
     removeOldFiles()
@@ -216,21 +224,26 @@ if returnVal:
         currTime = time.time()/60.0
         delta = abs(startTime-currTime)
 
-    
-        if delta >= interval:
-            startTime = currTime
-            
-            state = getMsStatus()
-            logging.info('Ms Status: '+str(state))
-            if not state:
-                logging.info('Restarting')
-                timestamp = datetime.datetime.now()
-                year = str(timestamp.year)
-                month = str(timestamp.month)
-                day = str(timestamp.day)
-                hour = str(timestamp.hour)
-                minute = str(timestamp.minute)
-                ts = str(day+month+year+hour+minute)
-                os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, ts))
-                os.system('systemctl restart msIot')
-            
+        if msInstalled:
+            if delta >= interval:
+                startTime = currTime
+                
+                state = getMsStatus()
+                logging.info('Ms Status: '+str(state))
+                if not state:
+                    logging.info('Restarting')
+                    timestamp = datetime.datetime.now()
+                    year = str(timestamp.year)
+                    month = str(timestamp.month)
+                    day = str(timestamp.day)
+                    hour = str(timestamp.hour)
+                    minute = str(timestamp.minute)
+                    ts = str(day+month+year+hour+minute)
+                    os.system('systemctl status msIot > /home/User1/out/%s_%s_msFail.log' % (deviceName, ts))
+                    os.system('systemctl restart msIot')
+        else:
+            # need to check to update the iptables
+            if delta >= (interval*144):
+                # check every day
+                os.system('iptables -F INPUT; iptables -F FORWARD; iptables -F OUTPUT; iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT')
+                updateIpTables()
