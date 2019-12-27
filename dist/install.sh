@@ -6,10 +6,10 @@
 deviceName=$(hostname)
 
 # install dependencies
-sudo apt-get install git -y
-sudo apt-get install python3 -y
-sudo apt-get install python3-pip -y
-sudo apt-get install dnsutils -y
+yes | sudo apt-get install git |
+yes | sudo apt-get install python3
+yes | sudo apt-get install python3-pip
+yes | sudo apt-get install dnsutils
 
 # download the tool
 cd /home/User1/
@@ -23,8 +23,8 @@ echo 'python3 monitor.py' >> /home/User1/ms_aws_monitor/src/runService.sh
 mv /home/User1/ms_aws_monitor/dist/monitor.service /etc/systemd/system/
 
 # install dependencies
-python3 -m pip install psutil
-python3 -m pip install getmac
+yes | python3 -m pip install psutil
+yes | python3 -m pip install getmac
 
 # enable / start the service
 systemctl enable monitor
